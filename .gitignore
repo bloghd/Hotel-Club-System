@@ -1,0 +1,106 @@
+############################
+# Python
+############################
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+
+############################
+# Virtual Environment
+############################
+venv/
+env/
+ENV/
+.venv/
+
+############################
+# Django
+############################
+db.sqlite3
+db.sqlite3-journal
+*.log
+local_settings.py
+media/
+staticfiles/
+*.pot
+
+############################
+# Environment variables
+############################
+.env
+.env.*
+!.env.example
+
+############################
+# IDE / Editor
+############################
+.vscode/
+.idea/
+*.swp
+*.swo
+
+############################
+# OS files
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Coverage / Testing
+############################
+htmlcov/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+
+############################
+# Celery
+############################
+celerybeat-schedule
+celerybeat.pid
+*.pid
+celery.log
+
+############################
+# Redis (لو شغال locally)
+############################
+dump.rdb
+appendonly.aof
+
+############################
+# Docker
+############################
+*.tar
+docker-compose.override.yml
+.env.docker
+*.env
+!Dockerfile
+!docker-compose.yml
+
+############################
+# Logs
+############################
+logs/
+*.log
+
+############################
+# Static collected files
+############################
+/staticfiles/
+
+############################
+# Migrations (لو مش عايز ترفعهم)
+############################
+# */migrations/*
+# !*/migrations/__init__.py
