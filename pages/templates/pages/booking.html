@@ -1,0 +1,548 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز الغرفة | Grand Royal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <style>
+        .booking-step {
+            display: none;
+        }
+
+        .booking-step.active {
+            display: block;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+        }
+
+        .step-item.active {
+            color: var(--gold);
+        }
+
+        .step-item.completed {
+            color: var(--success);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .step-item.active .step-number {
+            background: var(--gold);
+            color: var(--primary-dark);
+        }
+
+        .step-item.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+
+        .room-preview {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 15px;
+        }
+
+        .room-preview img {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover,
+        .payment-method.selected {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .payment-method i {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .confirmation-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 0 auto 30px;
+        }
+
+        .booking-id {
+            background: var(--gold);
+            color: var(--primary-dark);
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="{% url 'pages:room_list' %}">الغرف</a></li>
+                <li><a href="services.html">الخدمات</a></li>
+                <li><a href="../club/index.html">النادي</a></li>
+                <li><a href="contact.html">تواصل معنا</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="booking-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">إتمام الحجز</span>
+                <h2 class="section-title">احجز إقامتك الفاخرة</h2>
+            </div>
+
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step-item active" id="step1-indicator">
+                    <div class="step-number">1</div>
+                    <span>بيانات الحجز</span>
+                </div>
+                <div class="step-item" id="step2-indicator">
+                    <div class="step-number">2</div>
+                    <span>بيانات النزيل</span>
+                </div>
+                <div class="step-item" id="step3-indicator">
+                    <div class="step-number">3</div>
+                    <span>الدفع</span>
+                </div>
+                <div class="step-item" id="step4-indicator">
+                    <div class="step-number">4</div>
+                    <span>التأكيد</span>
+                </div>
+            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" style="margin-bottom: 20px; padding: 15px; border-radius: 10px; text-align: center; background: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %};">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="POST" action="" id="bookingForm" novalidate>
+                {% csrf_token %}
+                <div class="booking-grid">
+                    <!-- Booking Form Steps -->
+                    <div class="booking-form-card">
+                        <!-- Step 1: Booking Details -->
+                        <div class="booking-step active" id="step1">
+                            <h3 style="margin-bottom: 25px;">تفاصيل الحجز</h3>
+                            <div class="room-preview">
+                                <img src="{{room.image.url}}" alt="{{room.name}}">
+                                <div>
+                                    <h4 >{{room.name}} </h4>
+                                    <p style="color: var(--gold); font-size: 20px; font-weight: 700;">
+                                        {{room.price}}$ / ليلة</p>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>تاريخ الوصول</label>
+                                    <input type="date" name="arrival_date" required>
+                                    {% if form.arrival_date.errors %}
+                                        <div class="error-message">{{ form.arrival_date.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>تاريخ المغادرة</label>
+                                    <input type="date" name="departure_date" required>
+                                    {% if form.departure_date.errors %}
+                                        <div class="error-message">{{ form.departure_date.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>عدد البالغين</label>
+                                    <input type="number" name="number_of_adults" min="1" max="10" value="1">
+                                    {% if form.number_of_adults.errors %}
+                                        <div class="error-message">{{ form.number_of_adults.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>عدد الأطفال</label>
+                                    <input type="number" name="number_of_children" min="0" max="10" value="0">
+                                    {% if form.number_of_children.errors %}
+                                        <div class="error-message">{{ form.number_of_children.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>طلبات خاصة (اختياري)</label>
+                                <textarea name="special_requests" placeholder="أي طلبات خاصة للفندق..."></textarea>
+                                {% if form.special_requests.errors %}
+                                    <div class="error-message">{{ form.special_requests.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <button type="button" class="btn btn-gold btn-block btn-lg" onclick="nextStep(2)">
+                                التالي <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+
+                        <!-- Step 2: Guest Details -->
+                        <div class="booking-step" id="step2">
+                            <h3 style="margin-bottom: 25px;">بيانات النزيل</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>الاسم الأول</label>
+                                    <input type="text" name="firstName" placeholder="أدخل الاسم الأول" required>
+                                    {% if form.firstName.errors %}
+                                        <div class="error-message">{{ form.firstName.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>اسم العائلة</label>
+                                    <input type="text" name="lastName" placeholder="أدخل اسم العائلة" required>
+                                    {% if form.lastName.errors %}
+                                        <div class="error-message">{{ form.lastName.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>البريد الإلكتروني</label>
+                                <input type="email" name="email" placeholder="example@email.com" required>
+                                {% if form.email.errors %}
+                                    <div class="error-message">{{ form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الهاتف</label>
+                                <input type="tel" name="phone" placeholder="+966 50 123 4567" required>
+                                {% if form.phone.errors %}
+                                    <div class="error-message">{{ form.phone.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>الجنسية</label>
+                                <select name="nationality">
+                                    <option value="sa">السعودية</option>
+                                    <option value="ae">الإمارات</option>
+                                    <option value="kw">الكويت</option>
+                                    <option value="bh">البحرين</option>
+                                    <option value="qa">قطر</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                                {% if form.nationality.errors %}
+                                    <div class="error-message">{{ form.nationality.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div style="display: flex; gap: 15px;">
+                                <button type="button" class="btn btn-outline" style="flex: 1;" onclick="prevStep(1)">
+                                    <i class="fas fa-arrow-right"></i> السابق
+                                </button>
+                                <button type="button" class="btn btn-gold btn-lg" style="flex: 2;" onclick="nextStep(3)">
+                                    التالي <i class="fas fa-arrow-left"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Payment -->
+                        <div class="booking-step" id="step3">
+                            <h3 style="margin-bottom: 25px;">طريقة الدفع</h3>
+                            <div class="payment-methods">
+                                <div class="payment-method selected" onclick="selectPayment(this, 'card')">
+                                    <i class="fas fa-credit-card"></i>
+                                    <div>بطاقة ائتمان</div>
+                                </div>
+                                <div class="payment-method" onclick="selectPayment(this, 'cash')">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <div>كاش</div>
+                                </div>
+                                <div class="payment-method" onclick="selectPayment(this, 'transfer')">
+                                    <i class="fas fa-university"></i>
+                                    <div>تحويل بنكي</div>
+                                </div>
+                            </div>
+                            <div id="cardDetails">
+                                <div class="form-group">
+                                    <label>رقم البطاقة</label>
+                                    <input type="text" placeholder="0000 0000 0000 0000" maxlength="19">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>تاريخ الانتهاء</label>
+                                        <input type="text" placeholder="MM/YY" maxlength="5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CVV</label>
+                                        <input type="text" placeholder="123" maxlength="3">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>الاسم على البطاقة</label>
+                                    <input type="text" placeholder="الاسم كما يظهر على البطاقة">
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                <button type="button" class="btn btn-outline" style="flex: 1;" onclick="prevStep(2)">
+                                    <i class="fas fa-arrow-right"></i> السابق
+                                </button>
+                                <button type="button" class="btn btn-gold btn-lg" style="flex: 2;"
+                                    onclick="completeBooking()">
+                                    تأكيد الحجز <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Confirmation -->
+                        <div class="booking-step" id="step4">
+                            <div class="confirmation-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h3 style="text-align: center; margin-bottom: 10px;">تم تأكيد حجزك بنجاح!</h3>
+                            <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px;">
+                                سيتم إرسال تفاصيل الحجز إلى بريدك الإلكتروني
+                            </p>
+                            <div class="booking-id" >#GR-000000</div>
+                            <div
+                                style="background: var(--light-gray); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>الغرفة:</span>
+                                    <strong id="confirmRoom">-</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>تاريخ الوصول:</span>
+                                    <strong >-</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>تاريخ المغادرة:</span>
+                                    <strong id="confirmCheckOut">-</strong>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
+                                    <span>الإجمالي:</span>
+                                    <strong style="color: var(--gold); font-size: 20px;" id="confirmTotal">-</strong>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 15px;">
+                                <a href="../index.html" class="btn btn-gold btn-block">العودة للرئيسية</a>
+                                <button onclick="window.print()" class="btn btn-outline btn-block">
+                                    <i class="fas fa-print"></i> طباعة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking Summary -->
+                    <div class="booking-summary">
+                        <h3 style="margin-bottom: 20px;">ملخص الحجز</h3>
+                        <div class="summary-item">
+                            <span>الغرفة</span>
+                            <strong >{{ room.name }}</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span> السعر ليلة</span>
+                            <strong id="summaryPrice">{{room.price}}</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>عدد الليالي</span>
+                            <strong id="summaryNights">-</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>الضيوف</span>
+                            <strong id="summaryGuests">-</strong>
+                        </div>
+                        <div class="summary-item total">
+                            <span>الإجمالي</span>
+                            <strong id="summaryTotal">-</strong>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script>
+        let currentStep = 1;
+        const roomPrice = {{ room.price }};
+
+        // تحديث الملخص
+        function updateSummary() {
+            const checkIn = document.getElementById('checkInDate').value;
+            const checkOut = document.getElementById('checkOutDate').value;
+            const adults = document.getElementById('adultsCount').value;
+            const children = document.getElementById('childrenCount').value;
+
+            if (checkIn && checkOut) {
+                const start = new Date(checkIn);
+                const end = new Date(checkOut);
+                const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+                
+                if (nights > 0) {
+                    const total = nights * roomPrice;
+                    document.getElementById('summaryNights').textContent = nights + ' ليالي';
+                    document.getElementById('summaryGuests').textContent = `${adults} بالغين, ${children} أطفال`;
+                    document.getElementById('summaryTotal').textContent = total + '$';
+                }
+            }
+        }
+
+        // مستمعي الأحداث
+        document.getElementById('checkInDate')?.addEventListener('change', function() {
+            // تعيين الحد الأدنى للمغادرة
+            const checkIn = new Date(this.value);
+            const minCheckOut = new Date(checkIn);
+            minCheckOut.setDate(minCheckOut.getDate() + 1);
+            document.getElementById('checkOutDate').min = minCheckOut.toISOString().split('T')[0];
+            updateSummary();
+        });
+
+        document.getElementById('checkOutDate')?.addEventListener('change', updateSummary);
+        document.getElementById('adultsCount')?.addEventListener('change', updateSummary);
+        document.getElementById('childrenCount')?.addEventListener('change', updateSummary);
+
+        // التنقل بين الخطوات
+        function nextStep(step) {
+            // التحقق من الخطوة الحالية
+            if (currentStep === 1) {
+                const checkIn = document.getElementById('checkInDate').value;
+                const checkOut = document.getElementById('checkOutDate').value;
+                if (!checkIn || !checkOut) {
+                    alert('الرجاء اختيار تواريخ الإقامة');
+                    return;
+                }
+                const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+                if (nights <= 0) {
+                    alert('تاريخ المغادرة يجب أن يكون بعد تاريخ الوصول');
+                    return;
+                }
+            }
+            
+            if (currentStep === 2) {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                
+                if (!firstName || !lastName || !email || !phone) {
+                    alert('الرجاء ملء جميع البيانات المطلوبة');
+                    return;
+                }
+                
+                // التحقق من صحة البريد
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('الرجاء إدخال بريد إلكتروني صحيح');
+                    return;
+                }
+            }
+
+            // تحديث المؤشرات
+            document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
+            document.getElementById(`step${currentStep}-indicator`).classList.add('completed');
+            document.getElementById(`step${step}-indicator`).classList.add('active');
+
+            // إخفاء الخطوة الحالية وإظهار التالية
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${step}`).classList.add('active');
+
+            currentStep = step;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
+            document.getElementById(`step${step}-indicator`).classList.remove('completed');
+            document.getElementById(`step${step}-indicator`).classList.add('active');
+
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${step}`).classList.add('active');
+
+            currentStep = step;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // اختيار طريقة الدفع
+        function selectPayment(element, method) {
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+
+            const cardDetails = document.getElementById('cardDetails');
+            if (method === 'credit_card') {
+                cardDetails.style.display = 'block';
+            } else {
+                cardDetails.style.display = 'none';
+            }
+        }
+
+        // التهيئة
+        updateSummary();
+        
+        // تعيين الحد الأدنى لتاريخ الوصول (اليوم)
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('checkInDate').min = today;
+    </script>
+</body>
+
+</html>

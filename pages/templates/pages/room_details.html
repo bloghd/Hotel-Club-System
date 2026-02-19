@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل الغرفة | Grand Royal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+
+<body>
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="{% url 'pages:room_list' %}" class="active">الغرف</a></li>
+                <li><a href="services.html">الخدمات</a></li>
+                <li><a href="../club/index.html">النادي</a></li>
+                <li><a href="contact.html">تواصل معنا</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="booking.html" class="btn btn-gold">احجز الآن</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="room-details-section">
+        <div class="container">
+            <div class="room-details-grid">
+                <div class="room-gallery">
+                    <div class="main-image">
+                        <img  src="{{room.image.url}}" alt="{{room.name}}">
+                    </div>
+                    <div class="thumbnail-grid" id="thumbnailGrid">
+                        <!-- Thumbnails will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <div class="room-info-sidebar">
+                    <h2> {{room.name}}</h2>
+                    <div class="room-price-large">
+                        {{ room.price }}
+                        <span style="font-size: 18px;">/ ليلة</span>
+                    </div>
+                    <div class="rating" style="margin-bottom: 20px;">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span style="color: var(--text-muted); margin-right: 10px;">(4.9 تقييم)</span>
+                    </div>
+
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">{{room.description}} </p>
+
+                    <ul class="room-features-list" >
+                        {% for amenity in room_amenities %}
+                              <li>{{ amenity.name }}</li>
+                        {% empty %}
+                             <li>لا توجد مميزات حالياً</li>
+                                
+                        {% endfor %}
+                    </ul>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 15px;">المرافق:</h4>
+                        <div class="room-amenities">
+                            {% for amenity in room_amenities %}
+                                <i class="fas {{ amenity.icon }}"></i>
+                            {% empty %}
+                                <li>لا توجد مميزات حالياً</li>
+                        {% endfor %}
+                        </div>
+                    </div>
+
+                    <a href="{% url 'pages:booking' room.slug %}" class="btn btn-gold btn-block btn-lg" style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar-check"></i> احجز الآن
+                    </a>
+                    <a href="{% url 'pages:room_list' %}" class="btn btn-outline btn-block">
+                        <i class="fas fa-arrow-right"></i> العودة للغرف
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script>
+        // Load room details
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomId = urlParams.get('id');
+
+        const rooms = Utils.getFromStorage('rooms') || [];
+        const room = rooms.find(r => r.id == roomId) || rooms[0];
+
+        if (room) {
+            document.getElementById('roomName').textContent = room.name;
+            document.getElementById('roomPrice').innerHTML = `$${room.price} <span style="font-size: 18px;">/ ليلة</span>`;
+            document.getElementById('roomDescription').textContent = room.description;
+            document.getElementById('mainImage').src = room.image;
+            document.getElementById('mainImage').alt = room.name;
+
+            // Load thumbnails
+            const thumbnailGrid = document.getElementById('thumbnailGrid');
+            room.gallery.forEach((img, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'thumbnail';
+                thumb.innerHTML = `<img src="${img}" alt="${room.name} ${index + 1}">`;
+                thumb.addEventListener('click', () => {
+                    document.getElementById('mainImage').src = img;
+                });
+                thumbnailGrid.appendChild(thumb);
+            });
+
+            // Load features
+            const featuresList = document.getElementById('roomFeatures');
+            room.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-check-circle"></i> ${feature}`;
+                featuresList.appendChild(li);
+            });
+
+            // Load amenities
+            const amenitiesDiv = document.getElementById('roomAmenities');
+            const amenityIcons = {
+                wifi: 'fa-wifi',
+                ac: 'fa-snowflake',
+                tv: 'fa-tv',
+                minibar: 'fa-wine-bottle',
+                safe: 'fa-lock',
+                phone: 'fa-phone',
+                jacuzzi: 'fa-bath',
+                balcony: 'fa-umbrella-beach',
+                pool: 'fa-swimming-pool',
+                butler: 'fa-concierge-bell',
+                kitchen: 'fa-utensils',
+                coffee: 'fa-coffee'
+            };
+            room.amenities.forEach(amenity => {
+                const icon = amenityIcons[amenity] || 'fa-check';
+                const i = document.createElement('i');
+                i.className = `fas ${icon}`;
+                i.title = amenity;
+                amenitiesDiv.appendChild(i);
+            });
+
+            // Save current room for booking
+            localStorage.setItem('selectedRoom', JSON.stringify(room));
+        }
+    </script>
+</body>
+
+</html>

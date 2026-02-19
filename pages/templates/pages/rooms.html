@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الغرف والأجنحة | Grand Royal</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <style>
+        .page-header {
+            background: linear-gradient(rgba(10, 22, 40, 0.8), rgba(10, 22, 40, 0.8)),
+                url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920') center/cover;
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 0;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .breadcrumb a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .rooms-section {
+            padding: 80px 0;
+            background: var(--light-gray);
+        }
+
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="{% url 'pages:room_list' %}" class="active">الغرف والأجنحة</a></li>
+                <li><a href="services.html">الخدمات</a></li>
+                <li><a href="../club/index.html">النادي الرياضي</a></li>
+                <li><a href="gallery.html">المعرض</a></li>
+                <li><a href="contact.html">تواصل معنا</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="booking.html" class="btn btn-gold">احجز الآن</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div>
+            <h1>الغرف والأجنحة</h1>
+            <p>اختر من مجموعتنا الفاخرة من الغرف والأجنحة</p>
+        </div>
+    </section>
+
+    <!-- Rooms Grid -->
+    <section class="rooms-section">
+        <div class="container">
+            <div class="rooms-grid">
+                {% for room in room_list %}
+                    {% if room.flag == 'vip' %}
+                    <div class="room-card">
+                        <div class="room-image">
+                                <img src="{{room.image.url}}" alt="Royal Suite">
+                                <span class="room-badge">{{ room.get_flag_display }}</span>
+                                <div class="room-price">${{room.price}} / ليلة</div>
+                            </div>
+                            <div class="room-content">
+                                <h3 class="room-title">{{room.name}} </h3>
+                                <div class="room-meta">
+                                    <span><i class="fas fa-user"></i>  {{room.capacity}}</span>
+                                    <span><i class="fas fa-bed"></i>  {{room.bed_type}}</span>
+                                    <span><i class="fas fa-ruler-combined"></i> {{room.size}} م²</span>
+                                </div>
+                                <a href="{% url 'pages:room_details' room.slug %}" class="btn btn-gold" style="width: 100%;">تفاصيل الغرفة</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="room-card">
+                            <div class="room-image">
+                                <img src="{{room.image.url}}" alt="Deluxe Room">
+                                <span class="room-badge">{{ room.get_flag_display }}</span>
+                                <div class="room-price">${{150}} / ليلة</div>
+                            </div>
+                            <div class="room-content">
+                                <h3 class="room-title">{{room.name}} </h3>
+                                <div class="room-meta">
+                                    <span><i class="fas fa-user"></i>  {{room.capacity}}</span>
+                                    <span><i class="fas fa-bed"></i> {{room.bed_type}} </span>
+                                    <span><i class="fas fa-ruler-combined"></i> {{room.size}} م²</span>
+                                </div>
+                                <a href="{% url 'pages:room_details' room.slug %}" class="btn btn-dark" style="width: 100%;">تفاصيل الغرفة</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                        <span class="logo-text">Grand <span>Royal</span></span>
+                    </a>
+                    <p>فندق ونادي الرويال وجهتك المثالية للإقامة الفاخرة.</p>
+                </div>
+                <div class="footer-links-section">
+                    <h4 class="footer-title">روابط سريعة</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">الرئيسية</a></li>
+                        <li><a href="rooms.html">الغرف</a></li>
+                        <li><a href="services.html">الخدمات</a></li>
+                        <li><a href="contact.html">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4 class="footer-title">تواصل معنا</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> شارع الملك فهد، الرياض</p>
+                    <p><i class="fas fa-phone"></i> +966 11 123 4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Grand Royal Hotel & Club. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+
+</html>

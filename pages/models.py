@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, EmailValidator
 from django.core.exceptions import ValidationError
 import datetime
+from django.utils.text import slugify
 
 
 class RoomFlag(models.TextChoices):
@@ -60,6 +61,7 @@ class Room(models.Model):
         default=RoomFlag.AVAILABLE
     )
     is_active = models.BooleanField(_('نشط'), default=True)
+    slug = models.SlugField(_('الرابط'), unique=True, null=True, blank=True)
 
     class Meta:
         verbose_name = _('غرفة')
@@ -70,6 +72,11 @@ class Room(models.Model):
             models.Index(fields=['price']),
             models.Index(fields=['is_active']),
         ]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} ({self.get_flag_display()})"
@@ -178,6 +185,7 @@ class Nationality(models.Model):
         ordering = ['name']
 
     def __str__(self):
+        
         return self.name
 
 
