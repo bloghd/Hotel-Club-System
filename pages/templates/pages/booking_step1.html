@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بيانات الحجز | Grand Royal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <style>
+        .booking-step { display: block; }
+        .step-indicator { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; }
+        .step-item { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #6c757d; }
+        .step-item.active { color: #d4af37; }
+        .step-number { width: 40px; height: 40px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .step-item.active .step-number { background: #d4af37; color: #1a1a2e; }
+        .room-preview { display: flex; gap: 20px; margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 15px; }
+        .room-preview img { width: 150px; height: 100px; object-fit: cover; border-radius: 10px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-control { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .btn { padding: 15px 40px; border-radius: 25px; border: none; cursor: pointer; font-size: 16px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f4d03f); color: #1a1a2e; }
+        .booking-summary { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 30px rgba(0,0,0,0.1); height: fit-content; }
+        .summary-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .summary-item.total { border-top: 2px solid #d4af37; font-size: 20px; font-weight: 700; }
+        .booking-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        @media (max-width: 768px) { .booking-grid, .form-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+        </div>
+    </nav>
+
+    <section class="booking-section" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">إتمام الحجز</span>
+                <h2 class="section-title">احجز إقامتك الفاخرة</h2>
+            </div>
+
+            <div class="step-indicator">
+                <div class="step-item active">
+                    <div class="step-number">1</div>
+                    <span>بيانات الحجز</span>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <span>بيانات النزيل</span>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <span>الدفع</span>
+                </div>
+            </div>
+
+            <form method="post" action="{% url 'pages:booking_step1' room.slug %}">
+                {% csrf_token %}
+                
+                <div class="booking-grid">
+                    <div class="booking-form-card" style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 5px 30px rgba(0,0,0,0.1);">
+                        <h3 style="margin-bottom: 25px;">تفاصيل الحجز</h3>
+                        
+                        <div class="room-preview">
+                            <img src="{{ room.image.url }}" alt="{{ room.name }}">
+                            <div>
+                                <h4>{{ room.name }}</h4>
+                                <p style="color: #d4af37; font-size: 20px; font-weight: 700;">{{ room.price }}$ / ليلة</p>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>تاريخ الوصول *</label>
+                                <input type="date" name="arrival_date" class="form-control" required 
+                                       min="{{ today|date:'Y-m-d' }}" value="{{ request.session.booking_data.arrival_date|default:'' }}">
+                            </div>
+                            <div class="form-group">
+                                <label>تاريخ المغادرة *</label>
+                                <input type="date" name="departure_date" class="form-control" required
+                                       value="{{ request.session.booking_data.departure_date|default:'' }}">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>عدد البالغين *</label>
+                                <input type="number" name="number_of_adults" class="form-control" min="1" max="10" value="{{ request.session.booking_data.number_of_adults|default:'1' }}">
+                            </div>
+                            <div class="form-group">
+                                <label>عدد الأطفال</label>
+                                <input type="number" name="number_of_children" class="form-control" min="0" max="10" value="{{ request.session.booking_data.number_of_children|default:'0' }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>طلبات خاصة (اختياري)</label>
+                            <textarea name="special_requests" class="form-control" rows="3" placeholder="أي طلبات خاصة للفندق...">{{ request.session.booking_data.special_requests|default:'' }}</textarea>
+                        </div>
+
+                        <!-- زر الـ submit العادي -->
+                        <button type="submit" class="btn btn-gold btn-block">
+                            التالي <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+
+                    <div class="booking-summary">
+                        <h3 style="margin-bottom: 20px;">ملخص الحجز</h3>
+                        <div class="summary-item">
+                            <span>الغرفة</span>
+                            <strong>{{ room.name }}</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>السعر / ليلة</span>
+                            <strong>{{ room.price }}$</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>عدد الليالي</span>
+                            <strong id="summaryNights">-</strong>
+                        </div>
+                        <div class="summary-item total">
+                            <span>الإجمالي</span>
+                            <strong id="summaryTotal" style="color: #d4af37;">-</strong>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        const roomPrice = {{ room.price }};
+        
+        function updateSummary() {
+            const checkIn = document.querySelector('[name="arrival_date"]').value;
+            const checkOut = document.querySelector('[name="departure_date"]').value;
+            
+            if (checkIn && checkOut) {
+                const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+                if (nights > 0) {
+                    document.getElementById('summaryNights').textContent = nights + ' ليالي';
+                    document.getElementById('summaryTotal').textContent = (nights * roomPrice) + '$';
+                }
+            }
+        }
+
+        document.querySelector('[name="arrival_date"]').addEventListener('change', function() {
+            const minOut = new Date(this.value);
+            minOut.setDate(minOut.getDate() + 1);
+            document.querySelector('[name="departure_date"]').min = minOut.toISOString().split('T')[0];
+            updateSummary();
+        });
+        
+        document.querySelector('[name="departure_date"]').addEventListener('change', updateSummary);
+        updateSummary();
+    </script>
+</body>
+</html>

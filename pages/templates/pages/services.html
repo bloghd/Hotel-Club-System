@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدماتنا | Grand Royal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .service-detail-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .service-detail-card.reverse {
+            direction: ltr;
+        }
+
+        .service-detail-card.reverse>* {
+            direction: rtl;
+        }
+
+        .service-image {
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .service-detail-card:hover .service-image img {
+            transform: scale(1.1);
+        }
+
+        .service-content {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .service-content h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+        }
+
+        .service-content p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .service-features li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-features li i {
+            color: var(--gold);
+        }
+
+        .service-hours {
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: auto;
+        }
+
+        .service-hours h4 {
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .service-hours p {
+            margin: 0;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="rooms.html">الغرف</a></li>
+                <li><a href="services.html" class="active">الخدمات</a></li>
+                <li><a href="../club/index.html">النادي</a></li>
+                <li><a href="contact.html">تواصل معنا</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="booking.html" class="btn btn-gold">احجز الآن</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div>
+            <h1>خدماتنا المتميزة</h1>
+            <ul class="breadcrumb">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li>الخدمات</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="services" style="background: white; padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">ما نقدمه</span>
+                <h2 class="section-title">خدمات عالمية المستوى</h2>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 0 0 100px 0; background: var(--light-gray);">
+        <div class="container">
+            <!-- Restaurant -->
+            <div class="service-detail-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800" alt="Restaurant">
+                </div>
+                <div class="service-content">
+                    <h3><i class="fas fa-utensils" style="color: var(--gold); margin-left: 10px;"></i> المطاعم الفاخرة
+                    </h3>
+                    <p>استمتع بتجربة طعام استثنائية في مطاعمنا العالمية التي تقدم أشهى المأكولات من مختلف المطابخ
+                        العالمية بإشراف نخبة من الشيفات المحترفين.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check-circle"></i> مطعم عالمي (بوفيه مفتوح)</li>
+                        <li><i class="fas fa-check-circle"></i> مطعم إيطالي فاخر</li>
+                        <li><i class="fas fa-check-circle"></i> مقهى ولاونج</li>
+                        <li><i class="fas fa-check-circle"></i> خدمة الغرف 24 ساعة</li>
+                    </ul>
+                    <div class="service-hours">
+                        <h4>ساعات العمل</h4>
+                        <p>الإفطار: 6:00 - 10:30 ص | الغداء: 12:00 - 3:00 م | العشاء: 7:00 - 11:00 م</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spa -->
+            <div class="service-detail-card reverse">
+                <div class="service-content">
+                    <h3><i class="fas fa-spa" style="color: var(--gold); margin-left: 10px;"></i> السبا والمنتجع الصحي
+                    </h3>
+                    <p>استرخِ وجدد نشاطك في منتجعنا الصحي الفاخر الذي يقدم جلسات مساج وعلاجات تجميلية متنوعة باستخدام
+                        أجود المنتجات الطبيعية.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check-circle"></i> جلسات مساج متنوعة</li>
+                        <li><i class="fas fa-check-circle"></i> علاجات للبشرة والجسم</li>
+                        <li><i class="fas fa-check-circle"></i> ساونا وبخار</li>
+                        <li><i class="fas fa-check-circle"></i> جاكوزي</li>
+                    </ul>
+                    <div class="service-hours">
+                        <h4>ساعات العمل</h4>
+                        <p>يومياً من 9:00 ص حتى 10:00 م</p>
+                    </div>
+                </div>
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800" alt="Spa">
+                </div>
+            </div>
+
+            <!-- Pool -->
+            <div class="service-detail-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=800" alt="Pool">
+                </div>
+                <div class="service-content">
+                    <h3><i class="fas fa-swimming-pool" style="color: var(--gold); margin-left: 10px;"></i> حمامات
+                        السباحة</h3>
+                    <p>تمتع بالسباحة في مسبحنا الأولمبي المذهل مع إطلالة بانورامية رائعة، أو استرخِ في منطقة الجاكوزي
+                        المخصصة.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check-circle"></i> مسبح أولمبي (25 متر)</li>
+                        <li><i class="fas fa-check-circle"></i> مسبح للأطفال</li>
+                        <li><i class="fas fa-check-circle"></i> منطقة جاكوزي</li>
+                        <li><i class="fas fa-check-circle"></i> بار المسبح</li>
+                    </ul>
+                    <div class="service-hours">
+                        <h4>ساعات العمل</h4>
+                        <p>يومياً من 7:00 ص حتى 10:00 م</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gym -->
+            <div class="service-detail-card reverse">
+                <div class="service-content">
+                    <h3><i class="fas fa-dumbbell" style="color: var(--gold); margin-left: 10px;"></i> النادي الرياضي
+                    </h3>
+                    <p>حافظ على لياقتك البدنية في نادينا الرياضي المجهز بأحدث الأجهزة من Technogym و Life Fitness مع
+                        مدربين محترفين.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check-circle"></i> أجهزة كارديو حديثة</li>
+                        <li><i class="fas fa-check-circle"></i> منطقة أوزان حرة</li>
+                        <li><i class="fas fa-check-circle"></i> استوديو حصص جماعية</li>
+                        <li><i class="fas fa-check-circle"></i> مدربون شخصيون</li>
+                    </ul>
+                    <div class="service-hours">
+                        <h4>ساعات العمل</h4>
+                        <p>على مدار 24 ساعة للأعضاء</p>
+                    </div>
+                </div>
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800" alt="Gym">
+                </div>
+            </div>
+
+            <!-- Business Center -->
+            <div class="service-detail-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800" alt="Business Center">
+                </div>
+                <div class="service-content">
+                    <h3><i class="fas fa-briefcase" style="color: var(--gold); margin-left: 10px;"></i> مركز الأعمال
+                    </h3>
+                    <p>مركز أعمال مجهز بالكامل لتلبية احتياجات رجال الأعمال مع قاعات اجتماعات وخدمات سكرتارية متكاملة.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check-circle"></i> قاعات اجتماعات مجهزة</li>
+                        <li><i class="fas fa-check-circle"></i> خدمات الطباعة والنسخ</li>
+                        <li><i class="fas fa-check-circle"></i> اتصال إنترنت عالي السرعة</li>
+                        <li><i class="fas fa-check-circle"></i> خدمة السكرتارية</li>
+                    </ul>
+                    <div class="service-hours">
+                        <h4>ساعات العمل</h4>
+                        <p>على مدار 24 ساعة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: var(--primary-dark); padding: 80px 0; text-align: center;">
+        <div class="container">
+            <h2 style="color: white; font-size: 36px; margin-bottom: 20px;">هل تحتاج إلى مساعدة؟</h2>
+            <p style="color: rgba(255,255,255,0.8); margin-bottom: 30px; font-size: 18px;">فريقنا جاهز لمساعدتك في
+                اختيار الخدمات المناسبة لك</p>
+            <a href="contact.html" class="btn btn-gold btn-lg">تواصل معنا</a>
+        </div>
+    </section>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+
+</html>

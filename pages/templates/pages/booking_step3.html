@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفع | Grand Royal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <style>
+        .step-indicator { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; }
+        .step-item { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #6c757d; }
+        .step-item.completed { color: #28a745; }
+        .step-item.active { color: #d4af37; }
+        .step-number { width: 40px; height: 40px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .step-item.completed .step-number { background: #28a745; color: white; }
+        .step-item.active .step-number { background: #d4af37; color: #1a1a2e; }
+        .payment-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
+        .payment-method { padding: 20px; border: 2px solid #e9ecef; border-radius: 15px; text-align: center; cursor: pointer; position: relative; }
+        .payment-method.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.05); }
+        .payment-method input { position: absolute; opacity: 0; }
+        .payment-method i { font-size: 32px; margin-bottom: 10px; display: block; }
+        .booking-form-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 5px 30px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
+        .summary-box { background: #f8f9fa; padding: 25px; border-radius: 15px; margin: 25px 0; }
+        .summary-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #dee2e6; }
+        .btn { padding: 15px 40px; border-radius: 25px; border: none; cursor: pointer; font-size: 16px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f4d03f); color: #1a1a2e; }
+        .btn-outline { background: transparent; border: 2px solid #d4af37; color: #d4af37; }
+        @media (max-width: 768px) { .payment-methods { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+        </div>
+    </nav>
+
+    <section class="booking-section" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">إتمام الحجز</span>
+                <h2 class="section-title">احجز إقامتك الفاخرة</h2>
+            </div>
+
+            <div class="step-indicator">
+                <div class="step-item completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <span>بيانات الحجز</span>
+                </div>
+                <div class="step-item completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <span>بيانات النزيل</span>
+                </div>
+                <div class="step-item active">
+                    <div class="step-number">3</div>
+                    <span>الدفع</span>
+                </div>
+            </div>
+
+            <form method="post" action="{% url 'pages:booking_step3' room.slug %}">
+                {% csrf_token %}
+                
+                <div class="booking-form-card">
+                    <h3 style="margin-bottom: 25px;">طريقة الدفع</h3>
+                    
+                    <div class="payment-methods">
+                        <label class="payment-method selected" onclick="selectPayment(this)">
+                            <input type="radio" name="payment_method" value="cash" checked>
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div>كاش</div>
+                        </label>
+                        <label class="payment-method" onclick="selectPayment(this)">
+                            <input type="radio" name="payment_method" value="credit_card">
+                            <i class="fas fa-credit-card"></i>
+                            <div>بطاقة ائتمان</div>
+                        </label>
+                        <label class="payment-method" onclick="selectPayment(this)">
+                            <input type="radio" name="payment_method" value="bank_transfer">
+                            <i class="fas fa-university"></i>
+                            <div>تحويل بنكي</div>
+                        </label>
+                    </div>
+
+                    <div class="summary-box">
+                        <h4 style="margin-bottom: 15px;">ملخص الحجز</h4>
+                        <div class="summary-row">
+                            <span>الغرفة:</span>
+                            <strong>{{ room.name }}</strong>
+                        </div>
+                        <div class="summary-row">
+                            <span>تاريخ الوصول:</span>
+                            <strong>{{ booking_data.arrival_date }}</strong>
+                        </div>
+                        <div class="summary-row">
+                            <span>تاريخ المغادرة:</span>
+                            <strong>{{ booking_data.departure_date }}</strong>
+                        </div>
+                        <div class="summary-row">
+                            <span>عدد الليالي:</span>
+                            <strong>{{ nights }}</strong>
+                        </div>
+                        <div class="summary-row" style="border-top: 2px solid #d4af37; margin-top: 10px; padding-top: 10px;">
+                            <span>الإجمالي:</span>
+                            <strong style="color: #d4af37; font-size: 20px;">{{ total_price }}$</strong>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 15px;">
+                        <!-- زر الرجوع لينك -->
+                        <a href="{% url 'pages:booking_step2' room.slug %}" class="btn btn-outline" style="flex: 1;">
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </a>
+                        
+                        <!-- زر التأكيد submit -->
+                        <button type="submit" class="btn btn-gold" style="flex: 2;">
+                            تأكيد الحجز <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        function selectPayment(el) {
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
+        }
+    </script>
+</body>
+</html>
