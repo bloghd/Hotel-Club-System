@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -9,7 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <style>
         .service-detail-card {
             background: white;
@@ -144,120 +145,27 @@
 
     <section style="padding: 0 0 100px 0; background: var(--light-gray);">
         <div class="container">
-            <!-- Restaurant -->
-            <div class="service-detail-card">
-                <div class="service-image">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800" alt="Restaurant">
-                </div>
-                <div class="service-content">
-                    <h3><i class="fas fa-utensils" style="color: var(--gold); margin-left: 10px;"></i> المطاعم الفاخرة
-                    </h3>
-                    <p>استمتع بتجربة طعام استثنائية في مطاعمنا العالمية التي تقدم أشهى المأكولات من مختلف المطابخ
-                        العالمية بإشراف نخبة من الشيفات المحترفين.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check-circle"></i> مطعم عالمي (بوفيه مفتوح)</li>
-                        <li><i class="fas fa-check-circle"></i> مطعم إيطالي فاخر</li>
-                        <li><i class="fas fa-check-circle"></i> مقهى ولاونج</li>
-                        <li><i class="fas fa-check-circle"></i> خدمة الغرف 24 ساعة</li>
-                    </ul>
-                    <div class="service-hours">
-                        <h4>ساعات العمل</h4>
-                        <p>الإفطار: 6:00 - 10:30 ص | الغداء: 12:00 - 3:00 م | العشاء: 7:00 - 11:00 م</p>
+            {% for servic in services %}
+                <div class="service-detail-card">
+                    <div class="service-image">
+                        <img src="{{servic.image.url}}" alt="{{servic.name}}">
+                    </div>
+                    <div class="service-content">
+                        <h3><i style="color: var(--gold); margin-left: 10px;"></i> {{servic.name}} 
+                        </h3>
+                        <p>{{servic.description}}</p>
+                        <ul class="service-features">
+                            {% for detail in servic.details.all %}
+                                <li><i class="fas fa-check-circle"></i> {{detail.name}}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="service-hours">
+                            <h4>ساعات العمل</h4>
+                            <p> {{servic.working_hours}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Spa -->
-            <div class="service-detail-card reverse">
-                <div class="service-content">
-                    <h3><i class="fas fa-spa" style="color: var(--gold); margin-left: 10px;"></i> السبا والمنتجع الصحي
-                    </h3>
-                    <p>استرخِ وجدد نشاطك في منتجعنا الصحي الفاخر الذي يقدم جلسات مساج وعلاجات تجميلية متنوعة باستخدام
-                        أجود المنتجات الطبيعية.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check-circle"></i> جلسات مساج متنوعة</li>
-                        <li><i class="fas fa-check-circle"></i> علاجات للبشرة والجسم</li>
-                        <li><i class="fas fa-check-circle"></i> ساونا وبخار</li>
-                        <li><i class="fas fa-check-circle"></i> جاكوزي</li>
-                    </ul>
-                    <div class="service-hours">
-                        <h4>ساعات العمل</h4>
-                        <p>يومياً من 9:00 ص حتى 10:00 م</p>
-                    </div>
-                </div>
-                <div class="service-image">
-                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800" alt="Spa">
-                </div>
-            </div>
-
-            <!-- Pool -->
-            <div class="service-detail-card">
-                <div class="service-image">
-                    <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=800" alt="Pool">
-                </div>
-                <div class="service-content">
-                    <h3><i class="fas fa-swimming-pool" style="color: var(--gold); margin-left: 10px;"></i> حمامات
-                        السباحة</h3>
-                    <p>تمتع بالسباحة في مسبحنا الأولمبي المذهل مع إطلالة بانورامية رائعة، أو استرخِ في منطقة الجاكوزي
-                        المخصصة.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check-circle"></i> مسبح أولمبي (25 متر)</li>
-                        <li><i class="fas fa-check-circle"></i> مسبح للأطفال</li>
-                        <li><i class="fas fa-check-circle"></i> منطقة جاكوزي</li>
-                        <li><i class="fas fa-check-circle"></i> بار المسبح</li>
-                    </ul>
-                    <div class="service-hours">
-                        <h4>ساعات العمل</h4>
-                        <p>يومياً من 7:00 ص حتى 10:00 م</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gym -->
-            <div class="service-detail-card reverse">
-                <div class="service-content">
-                    <h3><i class="fas fa-dumbbell" style="color: var(--gold); margin-left: 10px;"></i> النادي الرياضي
-                    </h3>
-                    <p>حافظ على لياقتك البدنية في نادينا الرياضي المجهز بأحدث الأجهزة من Technogym و Life Fitness مع
-                        مدربين محترفين.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check-circle"></i> أجهزة كارديو حديثة</li>
-                        <li><i class="fas fa-check-circle"></i> منطقة أوزان حرة</li>
-                        <li><i class="fas fa-check-circle"></i> استوديو حصص جماعية</li>
-                        <li><i class="fas fa-check-circle"></i> مدربون شخصيون</li>
-                    </ul>
-                    <div class="service-hours">
-                        <h4>ساعات العمل</h4>
-                        <p>على مدار 24 ساعة للأعضاء</p>
-                    </div>
-                </div>
-                <div class="service-image">
-                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800" alt="Gym">
-                </div>
-            </div>
-
-            <!-- Business Center -->
-            <div class="service-detail-card">
-                <div class="service-image">
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800" alt="Business Center">
-                </div>
-                <div class="service-content">
-                    <h3><i class="fas fa-briefcase" style="color: var(--gold); margin-left: 10px;"></i> مركز الأعمال
-                    </h3>
-                    <p>مركز أعمال مجهز بالكامل لتلبية احتياجات رجال الأعمال مع قاعات اجتماعات وخدمات سكرتارية متكاملة.
-                    </p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check-circle"></i> قاعات اجتماعات مجهزة</li>
-                        <li><i class="fas fa-check-circle"></i> خدمات الطباعة والنسخ</li>
-                        <li><i class="fas fa-check-circle"></i> اتصال إنترنت عالي السرعة</li>
-                        <li><i class="fas fa-check-circle"></i> خدمة السكرتارية</li>
-                    </ul>
-                    <div class="service-hours">
-                        <h4>ساعات العمل</h4>
-                        <p>على مدار 24 ساعة</p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
@@ -271,7 +179,7 @@
         </div>
     </section>
 
-    <script src="../assets/js/main.js"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
 </body>
 
 </html>

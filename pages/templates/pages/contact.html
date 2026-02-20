@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تواصل معنا | Grand Royal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="rooms.html">الغرف</a></li>
+                <li><a href="services.html">الخدمات</a></li>
+                <li><a href="../club/index.html">النادي</a></li>
+                <li><a href="gallery.html">المعرض</a></li>
+                <li><a href="contact.html" class="active">تواصل معنا</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="booking.html" class="btn btn-gold">احجز الآن</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div>
+            <h1>تواصل معنا</h1>
+            <p>نحن هنا لمساعدتك على مدار الساعة</p>
+        </div>
+    </section>
+
+    <section class="contact-section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="contact-grid">
+                <div>
+                    <div class="contact-info-card">
+                        <h3 style="margin-bottom: 30px; color: var(--primary-dark);">معلومات التواصل</h3>
+
+                        <div class="contact-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>العنوان</h4>
+                                <p>شارع الملك فهد، حي العليا<br>الرياض 12212، المملكة العربية السعودية</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>الهاتف</h4>
+                                <p>+966 11 123 4567<br>+966 11 123 4568</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>البريد الإلكتروني</h4>
+                                <p>info@grandroyal.com<br>reservations@grandroyal.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>ساعات العمل</h4>
+                                <p>استقبال: 24 ساعة<br>الخدمات: على مدار اليوم</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card" style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 20px; color: var(--primary-dark);">تابعنا</h3>
+                        <div class="social-links" style="justify-content: flex-start;">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-card">
+                    <h3>أرسل لنا رسالة</h3>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>الاسم الكامل *</label>
+                                <input type="text" id="contactName" required placeholder="أدخل اسمك الكامل">
+                            </div>
+                            <div class="form-group">
+                                <label>البريد الإلكتروني *</label>
+                                <input type="email" id="contactEmail" required placeholder="example@email.com">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>رقم الهاتف</label>
+                                <input type="tel" id="contactPhone" placeholder="+966 50 123 4567">
+                            </div>
+                            <div class="form-group">
+                                <label>الموضوع *</label>
+                                <select id="contactSubject" required>
+                                    <option value="">اختر الموضوع</option>
+                                    <option value="booking">استفسار عن حجز</option>
+                                    <option value="membership">النادي الرياضي</option>
+                                    <option value="complaint">شكوى</option>
+                                    <option value="suggestion">اقتراح</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>الرسالة *</label>
+                            <textarea id="contactMessage" required placeholder="اكتب رسالتك هنا..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-gold btn-block btn-lg">
+                            <i class="fas fa-paper-plane"></i> إرسال الرسالة
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.563472667!2d46.67529531500164!3d24.81166798407992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2ee3b5d6f1e5c1%3A0x4c7d5b5e5e5e5e5e!2sKing%20Fahd%20Road%2C%20Riyadh!5e0!3m2!1sen!2ssa!4v1234567890"
+                    allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const contact = {
+                id: Utils.generateId(),
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                phone: document.getElementById('contactPhone').value,
+                subject: document.getElementById('contactSubject').value,
+                message: document.getElementById('contactMessage').value,
+                createdAt: new Date().toISOString()
+            };
+
+            const contacts = Utils.getFromStorage('contacts') || [];
+            contacts.push(contact);
+            Utils.saveToStorage('contacts', contacts);
+
+            showToast('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً', 'success');
+            this.reset();
+        });
+    </script>
+</body>
+
+</html>

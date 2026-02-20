@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.conf import settings
 from datetime import datetime
 from decimal import Decimal
-from .models import Room, Booking, Payment, Nationality, PaymentStatus, RoomAmenity, RoomImage, Service, ServiceDetail
+from .models import Room, Booking, Payment, Nationality, PaymentStatus, RoomAmenity, Service, Contact
 from django.core.mail import send_mail, BadHeaderError
 from datetime import datetime
 from smtplib import SMTPException
@@ -219,9 +219,20 @@ def booking_confirmation(request, booking_number):
                    'nights': nights
                    })
 
-def service(request):
-    services = Service.objects.all()
+def services(request):
+    services = Service.objects.filter(is_active=True).prefetch_related('details')
     context = {
         'services': services
     }
-    return render(request, 'pages/service.html')
+    return render(request, 'pages/services.html', context)
+
+
+def contact(request):
+    contact = get_object_or_404(Contact, is_active=True)
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('pages:contact')
+    return render(request, 'pages/contact.html')
+
