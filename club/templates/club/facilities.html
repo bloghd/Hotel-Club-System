@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز المرافق | Club Facilities</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-dark: #0a1628;
+            --primary-blue: #1e3a5f;
+            --gold: #d4af37;
+            --gold-light: #f4e4a6;
+            --light-gray: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--light-gray);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            background: var(--primary-dark);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-dark);
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-text span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--primary-dark);
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(10, 22, 40, 0.8), rgba(10, 22, 40, 0.8)),
+                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920') center/cover;
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 90px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 span {
+            color: var(--gold);
+        }
+
+        .facilities-section {
+            padding: 80px 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-subtitle {
+            color: var(--gold);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 42px;
+            color: var(--primary-dark);
+            margin: 10px 0;
+        }
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .facility-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .facility-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .facility-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .facility-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .facility-card:hover .facility-image img {
+            transform: scale(1.1);
+        }
+
+        .facility-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--gold);
+            color: var(--primary-dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .facility-content {
+            padding: 30px;
+        }
+
+        .facility-content h3 {
+            font-size: 24px;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .facility-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .facility-features {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .facility-features span {
+            background: var(--light-gray);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .facility-price {
+            font-size: 24px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .facility-price span {
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .booking-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        .booking-form h3 {
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .facilities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="index.html">النادي</a></li>
+                <li><a href="facilities.html" class="active">حجز المرافق</a></li>
+                <li><a href="trainers.html">المدربين</a></li>
+                <li><a href="membership.html">العضوية</a></li>
+            </ul>
+            <a href="facilities.html" class="btn btn-gold">احجز الآن</a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div>
+            <h1>حجز <span>المرافق</span></h1>
+            <p>احجز الملاعب، المسبح، أو القاعات الرياضية</p>
+        </div>
+    </section>
+
+    <section class="facilities-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">مرافقنا الرياضية</span>
+                <h2 class="section-title">اختر المرفق المناسب</h2>
+            </div>
+
+            <div class="facilities-grid">
+                <div class="facility-card">
+                    <div class="facility-image">
+                        <img src="https://images.unsplash.com/photo-1617083934555-ac2ef10b7024?w=600"
+                            alt="Tennis Court">
+                        <span class="facility-badge">الأكثر طلباً</span>
+                    </div>
+                    <div class="facility-content">
+                        <h3>ملعب التنس</h3>
+                        <p>ملعب تنس احترافي بمعايير دولية مع إضاءة ليلية</p>
+                        <div class="facility-features">
+                            <span><i class="fas fa-clock"></i> 60 دقيقة</span>
+                            <span><i class="fas fa-moon"></i> إضاءة ليلية</span>
+                            <span><i class="fas fa-shower"></i> غرف تبديل</span>
+                        </div>
+                        <div class="facility-price">$30 <span>/ ساعة</span></div>
+                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
+                    </div>
+                </div>
+
+                <div class="facility-card">
+                    <div class="facility-image">
+                        <img src="https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=600"
+                            alt="Swimming Pool">
+                    </div>
+                    <div class="facility-content">
+                        <h3>حمام السباحة</h3>
+                        <p>مسبح أولمبي مساحته 25 متر مع منطقة جاكوزي</p>
+                        <div class="facility-features">
+                            <span><i class="fas fa-ruler"></i> 25 متر</span>
+                            <span><i class="fas fa-hot-tub"></i> جاكوزي</span>
+                            <span><i class="fas fa-child"></i> منطقة أطفال</span>
+                        </div>
+                        <div class="facility-price">$15 <span>/ ساعة</span></div>
+                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
+                    </div>
+                </div>
+
+                <div class="facility-card">
+                    <div class="facility-image">
+                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600"
+                            alt="Squash Court">
+                        <span class="facility-badge">جديد</span>
+                    </div>
+                    <div class="facility-content">
+                        <h3>ملعب الاسكواش</h3>
+                        <p>ملعب اسكواش زجاجي مع جدران عازلة للصوت</p>
+                        <div class="facility-features">
+                            <span><i class="fas fa-volume-mute"></i> عازل صوت</span>
+                            <span><i class="fas fa-eye"></i> زجاجي</span>
+                            <span><i class="fas fa-snowflake"></i> مكيف</span>
+                        </div>
+                        <div class="facility-price">$25 <span>/ ساعة</span></div>
+                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
+                    </div>
+                </div>
+
+                <div class="facility-card">
+                    <div class="facility-image">
+                        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600"
+                            alt="Basketball Court">
+                    </div>
+                    <div class="facility-content">
+                        <h3>ملعب كرة السلة</h3>
+                        <p>ملعب كرة سلة داخلي بأرضية خشبية احترافية</p>
+                        <div class="facility-features">
+                            <span><i class="fas fa-basketball-ball"></i> خشبي</span>
+                            <span><i class="fas fa-users"></i> 5x5</span>
+                            <span><i class="fas fa-video"></i> تسجيل</span>
+                        </div>
+                        <div class="facility-price">$40 <span>/ ساعة</span></div>
+                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
+                    </div>
+                </div>
+
+                <div class="facility-card">
+                    <div class="facility-image">
+                        <img src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=600" alt="Yoga Studio">
+                    </div>
+                    <div class="facility-content">
+                        <h3>استوديو اليوغا</h3>
+                        <p>قاعة يوغا هادئة مع أرضية خشبية وإضاءة طبيعية</p>
+                        <div class="facility-features">
+                            <span><i class="fas fa-spa"></i> هادئ</span>
+                            <span><i class="fas fa-sun"></i> إضاءة طبيعية</span>
+                            <span><i class="fas fa-mat"></i> مزود بمستلزمات</span>
+                        </div>
+                        <div class="facility-price">$20 <span>/ ساعة</span></div>
+                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
+                    </div>
+                </div>
+
+                <div class="facility-card">
+                    <div class="facility-image">
+                        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600" alt="Gym Private">
+                        <span class="facility-badge">VIP</span>
+                    </div>
+                    <div class="facility-content">
+                        <h3>صالة رياضية خاصة</h3>
+                        <p>صالة رياضية خاصة مع مدرب شخصي</p>
+                        <div class="facility-features">
+                            <span><i class="fas fa-user"></i> خاص</span>
+                            <span><i class="fas fa-dumbbell"></i> معدات كاملة</span>
+                            <span><i class="fas fa-chalkboard-teacher"></i> مدرب</span>
+                        </div>
+                        <div class="facility-price">$50 <span>/ ساعة</span></div>
+                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-form">
+                <h3><i class="fas fa-calendar-alt" style="color: var(--gold);"></i> نموذج الحجز</h3>
+                <form>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>المرفق</label>
+                            <select required>
+                                <option value="">اختر المرفق</option>
+                                <option value="tennis">ملعب التنس</option>
+                                <option value="pool">حمام السباحة</option>
+                                <option value="squash">ملعب الاسكواش</option>
+                                <option value="basketball">ملعب كرة السلة</option>
+                                <option value="yoga">استوديو اليوغا</option>
+                                <option value="gym">صالة رياضية خاصة</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>التاريخ</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>وقت البداية</label>
+                            <input type="time" required>
+                        </div>
+                        <div class="form-group">
+                            <label>المدة (ساعات)</label>
+                            <select>
+                                <option value="1">1 ساعة</option>
+                                <option value="2">2 ساعة</option>
+                                <option value="3">3 ساعات</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gold"
+                        style="width: 100%; margin-top: 20px; padding: 15px;">تأكيد الحجز</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container" style="text-align: center;">
+            <p>© 2024 Grand Royal Club. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

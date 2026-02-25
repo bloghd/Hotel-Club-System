@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النادي الرياضي | Grand Royal Club</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <style>
+        .club-hero {
+            height: 80vh;
+            background: linear-gradient(rgba(10, 22, 40, 0.7), rgba(10, 22, 40, 0.7)),
+                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .club-hero h1 {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .club-hero h1 span {
+            color: var(--gold);
+        }
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .facility-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .facility-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .facility-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .facility-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .facility-card:hover .facility-image img {
+            transform: scale(1.1);
+        }
+
+        .facility-content {
+            padding: 25px;
+        }
+
+        .facility-content h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .trainers-section {
+            background: var(--primary-dark);
+            color: white;
+            padding: 100px 0;
+        }
+
+        .trainers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .trainer-card {
+            text-align: center;
+        }
+
+        .trainer-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 3px solid var(--gold);
+        }
+
+        .trainer-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trainer-card h4 {
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .trainer-card p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="{% url 'pages:room_list' %}">الغرف</a></li>
+                <li><a href="{% url 'pages:services' %}">الخدمات</a></li>
+                <li><a href="{% url 'club:club' %}" class="active">النادي</a></li>
+                <li><a href="../pages/contact.html">تواصل معنا</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="../pages/membership.html" class="btn btn-gold">اشترك الآن</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Club Hero -->
+    <section class="club-hero">
+        <div class="hero-content">
+            <h1>نادي <span>الرويال</span> الرياضي</h1>
+            <p class="hero-text">
+                اكتشف عالماً من اللياقة والعافية مع أحدث المعدات ونخبة من المدربين المحترفين
+            </p>
+            <div class="hero-buttons">
+                <a href="#facilities" class="btn btn-gold">استكشف المرافق</a>
+                <a href="#membership" class="btn btn-outline">خطط العضوية</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities -->
+    <section class="facilities" id="facilities">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">مرافقنا</span>
+                <h2 class="section-title">معدات عالمية المستوى</h2>
+            </div>
+
+            <div class="facilities-grid">
+                {% for club in clubs %}
+                    <div class="facility-card">
+                        <div class="facility-image">
+                            <img src="{{club.image.url}}" alt="{{club.title}}">
+                        </div>
+                        <div class="facility-content">
+                            <h3><i style="color: var(--gold);"></i> {{club.title}}  </h3>
+                            <p>{{club.description}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Trainers -->
+    <section class="trainers-section" id="trainers">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">فريقنا</span>
+                <h2 class="section-title" style="color: white;">المدربون المحترفون</h2>
+            </div>
+
+            <div class="trainers-grid">
+                {% for trainer in workingoaches %}
+                    <div class="trainer-card">
+                        <div class="trainer-image">
+                            <img src="{{trainer.image.url}}" alt="{{trainer.name}}">
+                        </div>
+                        <h4>{{trainer.name}} </h4>
+                        <p>{{trainer.description}}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Plans -->
+    <section class="club-preview" id="membership">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">خطط العضوية</span>
+                <h2 class="section-title">اختر خطتك المناسبة</h2>
+            </div>
+
+            <div class="membership-cards">
+                <div class="membership-card">
+                    <h3 class="plan-name">Bronze</h3>
+                    <div class="plan-price">$50 <span>/ شهر</span></div>
+                    <ul class="plan-features">
+                        <li>دخول منطقة الجيم</li>
+                        <li>استخدام المسبح 3 مرات/أسبوع</li>
+                        <li>جلسة تدريب واحدة شهرياً</li>
+                    </ul>
+                    <a href="../pages/membership.html?plan=bronze" class="btn btn-outline"
+                        style="width: 100%;">اشترك</a>
+                </div>
+
+                <div class="membership-card featured">
+                    <h3 class="plan-name">Gold</h3>
+                    <div class="plan-price">$120 <span>/ شهر</span></div>
+                    <ul class="plan-features">
+                        <li>دخول غير محدود</li>
+                        <li>4 جلسات تدريب شخصية</li>
+                        <li>دخول جميع المرافق</li>
+                        <li>خصم 20% على السبا</li>
+                    </ul>
+                    <a href="../pages/membership.html?plan=gold" class="btn btn-gold" style="width: 100%;">اشترك</a>
+                </div>
+
+                <div class="membership-card">
+                    <h3 class="plan-name">Platinum</h3>
+                    <div class="plan-price">$250 <span>/ شهر</span></div>
+                    <ul class="plan-features">
+                        <li>جميع مميزات Gold</li>
+                        <li>جلسات تدريب يومية</li>
+                        <li>نظام غذائي مخصص</li>
+                        <li>خزينة VIP</li>
+                    </ul>
+                    <a href="../pages/membership.html?plan=platinum" class="btn btn-outline"
+                        style="width: 100%;">اشترك</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+
+</html>

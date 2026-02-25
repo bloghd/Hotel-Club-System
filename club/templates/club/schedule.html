@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الجدول الزمني | Grand Royal Club</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <style>
+        .page-header {
+            background: linear-gradient(rgba(10, 22, 40, 0.8), rgba(10, 22, 40, 0.8)),
+                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920') center/cover;
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .schedule-section {
+            padding: 80px 0;
+            background: var(--light-gray);
+        }
+
+        .schedule-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .schedule-tab {
+            padding: 12px 30px;
+            background: white;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .schedule-tab:hover,
+        .schedule-tab.active {
+            background: var(--gold);
+            color: var(--primary-dark);
+            border-color: var(--gold);
+        }
+
+        .schedule-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .schedule-day {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .day-title {
+            font-size: 24px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-date {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .classes-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .class-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .class-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .class-time {
+            text-align: center;
+        }
+
+        .class-time .time {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .class-time .duration {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .class-info h4 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .class-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .class-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .meta-item i {
+            color: var(--gold);
+        }
+
+        .class-action {
+            text-align: center;
+        }
+
+        .spots-left {
+            font-size: 12px;
+            color: var(--success);
+            margin-bottom: 8px;
+        }
+
+        .spots-left.full {
+            color: var(--danger);
+        }
+
+        .btn-book-class {
+            padding: 10px 25px;
+            background: var(--gold);
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-book-class:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-book-class:disabled {
+            background: #e9ecef;
+            color: #adb5bd;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .class-type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .type-yoga {
+            background: rgba(255, 193, 7, 0.2);
+            color: #856404;
+        }
+
+        .type-cardio {
+            background: rgba(220, 53, 69, 0.2);
+            color: #721c24;
+        }
+
+        .type-strength {
+            background: rgba(40, 167, 69, 0.2);
+            color: #155724;
+        }
+
+        .type-pilates {
+            background: rgba(23, 162, 184, 0.2);
+            color: #0c5460;
+        }
+
+        .events-section {
+            margin-top: 60px;
+            padding-top: 60px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-image {
+            height: 200px;
+            position: relative;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-date-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--gold);
+            color: var(--primary-dark);
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .event-date-badge .day {
+            font-size: 24px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .event-date-badge .month {
+            font-size: 14px;
+        }
+
+        .event-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-content h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .event-content p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .event-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .event-meta i {
+            color: var(--gold);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crown"></i></div>
+                <span class="logo-text">Grand <span>Royal</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">الرئيسية</a></li>
+                <li><a href="index.html">النادي</a></li>
+                <li><a href="facilities.html">حجز المرافق</a></li>
+                <li><a href="trainers.html">المدربين</a></li>
+                <li><a href="schedule.html" class="active">الجدول</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="membership.html" class="btn btn-gold">اشترك الآن</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div>
+            <h1>الجدول الزمني</h1>
+            <p>احجز حصصك وفعالياتك المفضلة</p>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="schedule-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">جدول الحصص</span>
+                <h2 class="section-title">اختر يومك المفضل</h2>
+            </div>
+
+            <!-- Day Tabs -->
+            <div class="schedule-tabs">
+                <div class="schedule-tab active">السبت</div>
+                <div class="schedule-tab">الأحد</div>
+                <div class="schedule-tab">الإثنين</div>
+                <div class="schedule-tab">الثلاثاء</div>
+                <div class="schedule-tab">الأربعاء</div>
+                <div class="schedule-tab">الخميس</div>
+            </div>
+
+            <!-- Saturday Schedule -->
+            <div class="schedule-grid">
+                <div class="schedule-day">
+                    <div class="day-header">
+                        <h3 class="day-title">
+                            <i class="fas fa-calendar-day" style="color: var(--gold);"></i>
+                            السبت
+                        </h3>
+                        <span class="day-date">24 فبراير 2024</span>
+                    </div>
+                    <div class="classes-list">
+                        <div class="class-item">
+                            <div class="class-time">
+                                <div class="time">07:00</div>
+                                <div class="duration">60 دقيقة</div>
+                            </div>
+                            <div class="class-info">
+                                <h4>
+                                    <span class="class-type-badge type-yoga">يوغا</span>
+                                    يوغا صباحية
+                                </h4>
+                                <p>مع المدربة سارة محمد</p>
+                                <div class="class-meta">
+                                    <span class="meta-item"><i class="fas fa-user"></i> 15/20</span>
+                                    <span class="meta-item"><i class="fas fa-fire"></i> سهلة</span>
+                                    <span class="meta-item"><i class="fas fa-map-marker-alt"></i> صالة 3</span>
+                                </div>
+                            </div>
+                            <div class="class-action">
+                                <div class="spots-left">5 أماكن متاحة</div>
+                                <button class="btn-book-class">احجز الآن</button>
+                            </div>
+                        </div>
+
+                        <div class="class-item">
+                            <div class="class-time">
+                                <div class="time">09:00</div>
+                                <div class="duration">45 دقيقة</div>
+                            </div>
+                            <div class="class-info">
+                                <h4>
+                                    <span class="class-type-badge type-cardio">كارديو</span>
+                                    زومبا دانس
+                                </h4>
+                                <p>مع المدرب خالد السالم</p>
+                                <div class="class-meta">
+                                    <span class="meta-item"><i class="fas fa-user"></i> 25/30</span>
+                                    <span class="meta-item"><i class="fas fa-fire"></i> عالية</span>
+                                    <span class="meta-item"><i class="fas fa-map-marker-alt"></i> صالة 1</span>
+                                </div>
+                            </div>
+                            <div class="class-action">
+                                <div class="spots-left">5 أماكن متاحة</div>
+                                <button class="btn-book-class">احجز الآن</button>
+                            </div>
+                        </div>
+
+                        <div class="class-item">
+                            <div class="class-time">
+                                <div class="time">18:00</div>
+                                <div class="duration">60 دقيقة</div>
+                            </div>
+                            <div class="class-info">
+                                <h4>
+                                    <span class="class-type-badge type-strength">قوة</span>
+                                    تمارين القوة
+                                </h4>
+                                <p>مع المدرب أحمد العلي</p>
+                                <div class="class-meta">
+                                    <span class="meta-item"><i class="fas fa-user"></i> 12/15</span>
+                                    <span class="meta-item"><i class="fas fa-fire"></i> متوسطة</span>
+                                    <span class="meta-item"><i class="fas fa-map-marker-alt"></i> صالة 2</span>
+                                </div>
+                            </div>
+                            <div class="class-action">
+                                <div class="spots-left">3 أماكن متاحة</div>
+                                <button class="btn-book-class">احجز الآن</button>
+                            </div>
+                        </div>
+
+                        <div class="class-item">
+                            <div class="class-time">
+                                <div class="time">20:00</div>
+                                <div class="duration">50 دقيقة</div>
+                            </div>
+                            <div class="class-info">
+                                <h4>
+                                    <span class="class-type-badge type-pilates">بيلاتس</span>
+                                    بيلاتس مسائي
+                                </h4>
+                                <p>مع المدربة نورة عبدالله</p>
+                                <div class="class-meta">
+                                    <span class="meta-item"><i class="fas fa-user"></i> 20/20</span>
+                                    <span class="meta-item"><i class="fas fa-fire"></i> متوسطة</span>
+                                    <span class="meta-item"><i class="fas fa-map-marker-alt"></i> صالة 3</span>
+                                </div>
+                            </div>
+                            <div class="class-action">
+                                <div class="spots-left full">اكتمل العدد</div>
+                                <button class="btn-book-class" disabled>قائمة الانتظار</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Section -->
+            <div class="events-section">
+                <div class="section-header">
+                    <span class="section-subtitle">فعاليات خاصة</span>
+                    <h2 class="section-title">احدث الفعاليات والبطولات</h2>
+                </div>
+
+                <div class="events-grid">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600" alt="Event">
+                            <div class="event-date-badge">
+                                <span class="day">15</span>
+                                <span class="month">مارس</span>
+                            </div>
+                        </div>
+                        <div class="event-content">
+                            <h3>بطولة النادي للياقة البدنية</h3>
+                            <p>بطولة سنوية تجمع أفضل أعضاء النادي في منافسات رياضية متنوعة</p>
+                            <div class="event-meta">
+                                <span><i class="fas fa-clock"></i> 09:00 ص - 06:00 م</span>
+                                <span><i class="fas fa-users"></i> 100+ مشارك</span>
+                            </div>
+                            <button class="btn btn-gold" style="width: 100%;">سجل الآن</button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600" alt="Event">
+                            <div class="event-date-badge">
+                                <span class="day">22</span>
+                                <span class="month">مارس</span>
+                            </div>
+                        </div>
+                        <div class="event-content">
+                            <h3>يوم اليوغا المفتوح</h3>
+                            <p>يوم كامل من ورش اليوغا والتأمل مع مدربين محترفين من مختلف الدول</p>
+                            <div class="event-meta">
+                                <span><i class="fas fa-clock"></i> 08:00 ص - 08:00 م</span>
+                                <span><i class="fas fa-users"></i> 50 مقعد</span>
+                            </div>
+                            <button class="btn btn-gold" style="width: 100%;">احجز مقعدك</button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600" alt="Event">
+                            <div class="event-date-badge">
+                                <span class="day">01</span>
+                                <span class="month">أبريل</span>
+                            </div>
+                        </div>
+                        <div class="event-content">
+                            <h3>تحدي التخسيس 30 يوم</h3>
+                            <p>برنامج مكثف للتخسيس مع متابعة يومية من نخبة المدربين</p>
+                            <div class="event-meta">
+                                <span><i class="fas fa-clock"></i> شهر كامل</span>
+                                <span><i class="fas fa-users"></i> 30 مشارك</span>
+                            </div>
+                            <button class="btn btn-gold" style="width: 100%;">انضم للتحدي</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // Tab switching
+        document.querySelectorAll('.schedule-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.schedule-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
