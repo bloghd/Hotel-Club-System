@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,7 +7,7 @@
     <title>اشتراكات العضوية | Grand Royal Club</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <style>
         .membership-hero {
             background: linear-gradient(rgba(10,22,40,0.8), rgba(10,22,40,0.8)),
@@ -89,8 +90,8 @@
             </a>
             <ul class="nav-links">
                 <li><a href="../index.html">الرئيسية</a></li>
-                <li><a href="index.html">النادي</a></li>
-                <li><a href="membership.html" class="active">العضوية</a></li>
+                <li><a href="{% url 'club:club' %}">النادي</a></li>
+                <li><a href="{% url 'club:membership_plans' %}" class="active">العضوية</a></li>
                 <li><a href="facilities.html">المرافق</a></li>
                 <li><a href="../pages/contact.html">تواصل معنا</a></li>
             </ul>
@@ -233,6 +234,6 @@
         </div>
     </section>
 
-    <script src="../assets/js/main.js"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
 </body>
 </html>

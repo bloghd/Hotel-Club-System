@@ -139,7 +139,7 @@
             </ul>
 
             <div class="nav-actions">
-                <a href="../pages/membership.html" class="btn btn-gold">اشترك الآن</a>
+                <a href="{% url 'club:membership_plans' %}" class="btn btn-gold">اشترك الآن</a>
             </div>
         </div>
     </nav>
@@ -213,42 +213,32 @@
             </div>
 
             <div class="membership-cards">
-                <div class="membership-card">
-                    <h3 class="plan-name">Bronze</h3>
-                    <div class="plan-price">$50 <span>/ شهر</span></div>
-                    <ul class="plan-features">
-                        <li>دخول منطقة الجيم</li>
-                        <li>استخدام المسبح 3 مرات/أسبوع</li>
-                        <li>جلسة تدريب واحدة شهرياً</li>
-                    </ul>
-                    <a href="../pages/membership.html?plan=bronze" class="btn btn-outline"
-                        style="width: 100%;">اشترك</a>
-                </div>
-
-                <div class="membership-card featured">
-                    <h3 class="plan-name">Gold</h3>
-                    <div class="plan-price">$120 <span>/ شهر</span></div>
-                    <ul class="plan-features">
-                        <li>دخول غير محدود</li>
-                        <li>4 جلسات تدريب شخصية</li>
-                        <li>دخول جميع المرافق</li>
-                        <li>خصم 20% على السبا</li>
-                    </ul>
-                    <a href="../pages/membership.html?plan=gold" class="btn btn-gold" style="width: 100%;">اشترك</a>
-                </div>
-
-                <div class="membership-card">
-                    <h3 class="plan-name">Platinum</h3>
-                    <div class="plan-price">$250 <span>/ شهر</span></div>
-                    <ul class="plan-features">
-                        <li>جميع مميزات Gold</li>
-                        <li>جلسات تدريب يومية</li>
-                        <li>نظام غذائي مخصص</li>
-                        <li>خزينة VIP</li>
-                    </ul>
-                    <a href="../pages/membership.html?plan=platinum" class="btn btn-outline"
-                        style="width: 100%;">اشترك</a>
-                </div>
+                {% for plan in membership_plans %}
+                    {% if plan.name == 'Gold' %}
+                         <div class="membership-card featured">
+                            <h3 class="plan-name">{{plan.name}}</h3>
+                            <div class="plan-price">${{plan.price}} <span>/ شهر</span></div>
+                            <ul class="plan-features">
+                                {% for feature in plan.features.all %}
+                                    <li>{{feature}}</li>
+                                {% endfor %}
+                            </ul>
+                            <a href="../pages/membership.html?plan=gold" class="btn btn-gold" style="width: 100%;">اشترك</a>
+                            </div>
+                    {% else %}
+                        <div class="membership-card">
+                            <h3 class="plan-name">{{plan.name}}</h3>
+                            <div class="plan-price">${{plan.price}} <span>/ شهر</span></div>
+                            <ul class="plan-features">
+                                {% for feature in plan.features.all %}
+                                    <li>{{feature}}</li>
+                                {% endfor %}
+                            </ul>
+                            <a href="../pages/membership.html?plan=bronze" class="btn btn-outline"
+                                style="width: 100%;">اشترك</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </section>
