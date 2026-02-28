@@ -139,7 +139,7 @@
             </ul>
 
             <div class="nav-actions">
-                <a href="{% url 'club:membership_plans' %}" class="btn btn-gold">اشترك الآن</a>
+                <a href="{% url 'club:club' %}" class="btn btn-gold">اشترك الآن</a>
             </div>
         </div>
     </nav>
@@ -191,7 +191,7 @@
             </div>
 
             <div class="trainers-grid">
-                {% for trainer in workingoaches %}
+                {% for trainer in trainers %}
                     <div class="trainer-card">
                         <div class="trainer-image">
                             <img src="{{trainer.image.url}}" alt="{{trainer.name}}">
@@ -223,7 +223,7 @@
                                     <li>{{feature}}</li>
                                 {% endfor %}
                             </ul>
-                            <a href="../pages/membership.html?plan=gold" class="btn btn-gold" style="width: 100%;">اشترك</a>
+                            <a href="#" class="btn btn-gold" style="width: 100%;">اشترك</a>
                             </div>
                     {% else %}
                         <div class="membership-card">
@@ -234,7 +234,7 @@
                                     <li>{{feature}}</li>
                                 {% endfor %}
                             </ul>
-                            <a href="../pages/membership.html?plan=bronze" class="btn btn-outline"
+                            <a href="#" class="btn btn-outline"
                                 style="width: 100%;">اشترك</a>
                         </div>
                     {% endif %}

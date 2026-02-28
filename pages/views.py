@@ -225,14 +225,3 @@ def services(request):
         'services': services
     }
     return render(request, 'pages/services.html', context)
-
-
-def contact(request):
-    contact = get_object_or_404(Contact, is_active=True)
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('pages:contact')
-    return render(request, 'pages/contact.html')
-
