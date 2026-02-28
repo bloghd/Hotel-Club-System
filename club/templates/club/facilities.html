@@ -329,12 +329,11 @@
             </a>
             <ul class="nav-links">
                 <li><a href="../index.html">الرئيسية</a></li>
-                <li><a href="index.html">النادي</a></li>
-                <li><a href="facilities.html" class="active">حجز المرافق</a></li>
-                <li><a href="trainers.html">المدربين</a></li>
-                <li><a href="membership.html">العضوية</a></li>
+                <li><a href="{% url 'club:club' %}">النادي</a></li>
+                <li><a href="{% url 'club:facilities' %}" class="active">حجز المرافق</a></li>
+                <li><a href="#">المدربين</a></li>
             </ul>
-            <a href="facilities.html" class="btn btn-gold">احجز الآن</a>
+            <a href="{% url 'club:facilities' %}" class="btn btn-gold">احجز الآن</a>
         </div>
     </nav>
 
@@ -353,146 +352,54 @@
             </div>
 
             <div class="facilities-grid">
-                <div class="facility-card">
-                    <div class="facility-image">
-                        <img src="https://images.unsplash.com/photo-1617083934555-ac2ef10b7024?w=600"
-                            alt="Tennis Court">
-                        <span class="facility-badge">الأكثر طلباً</span>
-                    </div>
-                    <div class="facility-content">
-                        <h3>ملعب التنس</h3>
-                        <p>ملعب تنس احترافي بمعايير دولية مع إضاءة ليلية</p>
-                        <div class="facility-features">
-                            <span><i class="fas fa-clock"></i> 60 دقيقة</span>
-                            <span><i class="fas fa-moon"></i> إضاءة ليلية</span>
-                            <span><i class="fas fa-shower"></i> غرف تبديل</span>
+                {% for facility in facilities %}
+                    <div class="facility-card">
+                        <div class="facility-image">
+                            <img src="{{facility.image.url}}" alt="{{facility.name}}">
+                            <span class="facility-badge">{{facility.get_flag_display}} </span>
                         </div>
-                        <div class="facility-price">$30 <span>/ ساعة</span></div>
-                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
-                    </div>
-                </div>
-
-                <div class="facility-card">
-                    <div class="facility-image">
-                        <img src="https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=600"
-                            alt="Swimming Pool">
-                    </div>
-                    <div class="facility-content">
-                        <h3>حمام السباحة</h3>
-                        <p>مسبح أولمبي مساحته 25 متر مع منطقة جاكوزي</p>
-                        <div class="facility-features">
-                            <span><i class="fas fa-ruler"></i> 25 متر</span>
-                            <span><i class="fas fa-hot-tub"></i> جاكوزي</span>
-                            <span><i class="fas fa-child"></i> منطقة أطفال</span>
+                        <div class="facility-content">
+                            <h3>{{facility.name}}</h3>
+                            <p>{{facility.description}}</p>
+                            <div class="facility-features">
+                                {% for feature in facility.services.all %}
+                                    <span> {{feature.name}}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="facility-price">${{facility.price}} <span>/ ساعة</span></div>
+                            <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
                         </div>
-                        <div class="facility-price">$15 <span>/ ساعة</span></div>
-                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
                     </div>
-                </div>
-
-                <div class="facility-card">
-                    <div class="facility-image">
-                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600"
-                            alt="Squash Court">
-                        <span class="facility-badge">جديد</span>
-                    </div>
-                    <div class="facility-content">
-                        <h3>ملعب الاسكواش</h3>
-                        <p>ملعب اسكواش زجاجي مع جدران عازلة للصوت</p>
-                        <div class="facility-features">
-                            <span><i class="fas fa-volume-mute"></i> عازل صوت</span>
-                            <span><i class="fas fa-eye"></i> زجاجي</span>
-                            <span><i class="fas fa-snowflake"></i> مكيف</span>
-                        </div>
-                        <div class="facility-price">$25 <span>/ ساعة</span></div>
-                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
-                    </div>
-                </div>
-
-                <div class="facility-card">
-                    <div class="facility-image">
-                        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600"
-                            alt="Basketball Court">
-                    </div>
-                    <div class="facility-content">
-                        <h3>ملعب كرة السلة</h3>
-                        <p>ملعب كرة سلة داخلي بأرضية خشبية احترافية</p>
-                        <div class="facility-features">
-                            <span><i class="fas fa-basketball-ball"></i> خشبي</span>
-                            <span><i class="fas fa-users"></i> 5x5</span>
-                            <span><i class="fas fa-video"></i> تسجيل</span>
-                        </div>
-                        <div class="facility-price">$40 <span>/ ساعة</span></div>
-                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
-                    </div>
-                </div>
-
-                <div class="facility-card">
-                    <div class="facility-image">
-                        <img src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=600" alt="Yoga Studio">
-                    </div>
-                    <div class="facility-content">
-                        <h3>استوديو اليوغا</h3>
-                        <p>قاعة يوغا هادئة مع أرضية خشبية وإضاءة طبيعية</p>
-                        <div class="facility-features">
-                            <span><i class="fas fa-spa"></i> هادئ</span>
-                            <span><i class="fas fa-sun"></i> إضاءة طبيعية</span>
-                            <span><i class="fas fa-mat"></i> مزود بمستلزمات</span>
-                        </div>
-                        <div class="facility-price">$20 <span>/ ساعة</span></div>
-                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
-                    </div>
-                </div>
-
-                <div class="facility-card">
-                    <div class="facility-image">
-                        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600" alt="Gym Private">
-                        <span class="facility-badge">VIP</span>
-                    </div>
-                    <div class="facility-content">
-                        <h3>صالة رياضية خاصة</h3>
-                        <p>صالة رياضية خاصة مع مدرب شخصي</p>
-                        <div class="facility-features">
-                            <span><i class="fas fa-user"></i> خاص</span>
-                            <span><i class="fas fa-dumbbell"></i> معدات كاملة</span>
-                            <span><i class="fas fa-chalkboard-teacher"></i> مدرب</span>
-                        </div>
-                        <div class="facility-price">$50 <span>/ ساعة</span></div>
-                        <button class="btn btn-gold" style="width: 100%;">احجز الآن</button>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
 
-            <div class="booking-form">
+            <div class="booking-form" >
                 <h3><i class="fas fa-calendar-alt" style="color: var(--gold);"></i> نموذج الحجز</h3>
-                <form>
+                <form method="post" action="{% url 'club:facilities_booking' %}">
+                    {% csrf_token %}
                     <div class="form-grid">
                         <div class="form-group">
                             <label>المرفق</label>
                             <select required>
-                                <option value="">اختر المرفق</option>
-                                <option value="tennis">ملعب التنس</option>
-                                <option value="pool">حمام السباحة</option>
-                                <option value="squash">ملعب الاسكواش</option>
-                                <option value="basketball">ملعب كرة السلة</option>
-                                <option value="yoga">استوديو اليوغا</option>
-                                <option value="gym">صالة رياضية خاصة</option>
+                                {% for facility in facilities %}
+                                    <option name="facility" value="tennis">{{facility.name}} </option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="form-group">
                             <label>التاريخ</label>
-                            <input type="date" required>
+                            <input name="booking_date" type="date" required>
                         </div>
                         <div class="form-group">
                             <label>وقت البداية</label>
-                            <input type="time" required>
+                            <input name="booking_start_time" type="time" required>
                         </div>
                         <div class="form-group">
                             <label>المدة (ساعات)</label>
                             <select>
-                                <option value="1">1 ساعة</option>
-                                <option value="2">2 ساعة</option>
-                                <option value="3">3 ساعات</option>
+                                {% for time in facilities %}
+                                    <option name="time_flag" value="1">{{time.bookings.time_flag}} ساعة</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>

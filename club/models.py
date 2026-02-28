@@ -94,14 +94,21 @@ class FacilityServices(models.Model):
         verbose_name_plural = _('خدمات المرافق')
     def __str__(self):
         return self.name
-    
+
+TIME_FLAG_CHOICES = [
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+    ('6', '6'),
+]
 
 class FacilityBooking(models.Model):
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name='bookings', verbose_name=_('المرفق'))
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='facility_bookings', verbose_name=_('المستخدم'))
     booking_date = models.DateTimeField(_('تاريخ الحجز'), default=timezone.now)
-    booking_time = models.TimeField(_('وقت الحجز'), default=timezone.now)
-    is_active = models.BooleanField(_('نشط'), default=True)
+    booking_start_time = models.TimeField(_('وقت الحجز'))
+    time_flag = models.CharField(_('مدة الحجز'), max_length=1, choices=TIME_FLAG_CHOICES, default='1')
     created_at = models.DateTimeField(_('تاريخ الإنشاء'), default=timezone.now)
     updated_at = models.DateTimeField(_('تاريخ التحديث'), auto_now=True)
 
@@ -109,4 +116,4 @@ class FacilityBooking(models.Model):
         verbose_name = _('حجز المرفق')
         verbose_name_plural = _('حجوزات المرافق')
     def __str__(self):
-        return f"{self.user.username} - {self.facility.name} - {self.booking_date.strftime('%Y-%m-%d %H:%M')}"
+        return f"{self.facility.name} - {self.booking_date.strftime('%Y-%m-%d %H:%M')}"

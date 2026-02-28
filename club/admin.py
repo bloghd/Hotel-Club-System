@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from .models import Club, Workingoaches, MembershipPlans, MembershipPlanFeatures
+from .models import Club, Workingoaches, MembershipPlans, MembershipPlanFeatures, Facility, FacilityBooking, FacilityServices
 
 
 @admin.register(Workingoaches)
@@ -33,6 +33,24 @@ class MembershipPlanFeaturesAdmin(admin.ModelAdmin):
     list_display = ('membership_plan', 'name', 'is_active')
     list_filter = ('is_active', 'created_at')
     search_fields = ('membership_plan', 'name')
+
+
+class FacilityServicesInline(admin.TabularInline):
+    model = FacilityServices
+    extra = 1
+
+@admin.register(Facility)
+class FacilityAdmin(admin.ModelAdmin):
+    list_display = ('name', 'is_active')
+    list_filter = ('is_active', 'created_at')
+    search_fields = ('name',)
+    inlines = [FacilityServicesInline]
+
+@admin.register(FacilityBooking)
+class FacilityBookingAdmin(admin.ModelAdmin):
+    list_display = ('facility', 'booking_date', 'time_flag')
+    list_filter = ('booking_date', 'time_flag')
+    search_fields = ('facility__name',)
 
 
     
